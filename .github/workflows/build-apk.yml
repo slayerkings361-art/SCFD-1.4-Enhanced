@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -28,9 +28,12 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Install Android SDK
+      - name: Configure Android SDK
         run: |
-          sdkmanager "platforms;android-35" "build-tools;35.0.0"
+          echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=/usr/local/lib/android/sdk" >> "$GITHUB_ENV"
+          ls /usr/local/lib/android/sdk/platforms
+          test -d /usr/local/lib/android/sdk/platforms/android-35
 
       - name: Build APK
         working-directory: source
